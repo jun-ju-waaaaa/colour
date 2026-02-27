@@ -4,7 +4,6 @@
   <meta charset="UTF-8" />
   <title>スマホ用カラーコード変換ツール</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <!-- スマホ最適化用CSS -->
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -18,7 +17,7 @@
       </header>
 
       <div class="layout">
-        <!-- ピッカー＋プレビュー（スマホでは上） -->
+        <!-- ピッカー＋プレビュー -->
         <section class="picker-block">
           <div class="picker-area">
             <div id="slPanel" class="sl-panel">
@@ -32,9 +31,13 @@
           <div id="preview" class="preview">
             <div id="previewLabel" class="preview-inner">#ff6600</div>
           </div>
+
+          <button id="saveColorBtn" class="save-btn" type="button">
+            この色を保存
+          </button>
         </section>
 
-        <!-- コードカード（スマホでは下） -->
+        <!-- コードカード -->
         <section class="codes-grid">
           <div class="code-card" data-type="hex">
             <div class="code-header">
@@ -102,10 +105,15 @@
           </div>
         </section>
       </div>
+
+      <!-- 保存色 -->
+      <section class="saved-colors">
+        <h2 class="saved-title">Saved Colors</h2>
+        <div id="savedList" class="saved-list"></div>
+      </section>
     </div>
   </div>
 
-  <!-- メインロジック -->
   <script src="main.js"></script>
 </body>
 </html>
