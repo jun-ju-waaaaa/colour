@@ -6,9 +6,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
   <div class="page">
     <div class="app">
+
+      <!-- ヘッダー -->
       <header class="app-header">
         <h1 class="app-title">Color Code Converter</h1>
         <p class="app-subtitle">
@@ -16,31 +19,42 @@
         </p>
       </header>
 
+      <!-- ピッカー全体 -->
       <section class="picker-block">
+
+        <!-- SLパネル + Hueスライダー -->
         <div class="picker-area">
           <div id="slPanel" class="sl-panel">
             <div id="slThumb" class="sl-thumb"></div>
           </div>
+
           <div id="hueSlider" class="hue-slider">
             <div id="hueHandle" class="hue-handle"></div>
           </div>
         </div>
 
+        <!-- プレビュー -->
         <div id="preview" class="preview">
           <div id="previewLabel" class="preview-inner">#ff6600</div>
         </div>
 
+        <!-- 保存ボタン -->
         <button id="saveColorBtn" class="save-btn" type="button">
           この色を保存
         </button>
 
+        <!-- 保存色 -->
         <section class="saved-colors">
           <h2 class="saved-title">Saved Colors</h2>
           <div id="savedList" class="saved-list"></div>
         </section>
+
       </section>
 
+      <!-- カラーコード一覧 -->
       <section class="codes-grid">
+
+        <!-- HEX -->
         <div class="code-card" data-type="hex">
           <div class="code-header">
             <span class="code-label">HEX</span>
@@ -49,13 +63,14 @@
           <div class="code-body">
             <span class="code-text" data-code>#ff6600</span>
             <button class="copy-btn" type="button">
-              <svg class="copy-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <svg class="copy-icon" viewBox="0 0 24 24">
                 <path d="M9 3H5a2 2 0 0 0-2 2v12h2V5h4V3Zm3 4h7a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-7a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2Zm0 2v10h7V9h-7Z"/>
               </svg>
             </button>
           </div>
         </div>
 
+        <!-- RGB -->
         <div class="code-card" data-type="rgb">
           <div class="code-header">
             <span class="code-label">RGB</span>
@@ -64,13 +79,14 @@
           <div class="code-body">
             <span class="code-text" data-code>rgb(255, 102, 0)</span>
             <button class="copy-btn" type="button">
-              <svg class="copy-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <svg class="copy-icon" viewBox="0 0 24 24">
                 <path d="M9 3H5a2 2 0 0 0-2 2v12h2V5h4V3Zm3 4h7a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-7a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2Zm0 2v10h7V9h-7Z"/>
               </svg>
             </button>
           </div>
         </div>
 
+        <!-- HSL -->
         <div class="code-card" data-type="hsl">
           <div class="code-header">
             <span class="code-label">HSL</span>
@@ -79,13 +95,14 @@
           <div class="code-body">
             <span class="code-text" data-code>hsl(24, 100%, 50%)</span>
             <button class="copy-btn" type="button">
-              <svg class="copy-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <svg class="copy-icon" viewBox="0 0 24 24">
                 <path d="M9 3H5a2 2 0 0 0-2 2v12h2V5h4V3Zm3 4h7a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-7a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2Zm0 2v10h7V9h-7Z"/>
               </svg>
             </button>
           </div>
         </div>
 
+        <!-- RGBA -->
         <div class="code-card" data-type="rgba">
           <div class="code-header">
             <span class="code-label">RGBA</span>
@@ -94,17 +111,19 @@
           <div class="code-body">
             <span class="code-text" data-code>rgba(255, 102, 0, 1)</span>
             <button class="copy-btn" type="button">
-              <svg class="copy-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <svg class="copy-icon" viewBox="0 0 24 24">
                 <path d="M9 3H5a2 2 0 0 0-2 2v12h2V5h4V3Zm3 4h7a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-7a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2Zm0 2v10h7V9h-7Z"/>
               </svg>
             </button>
           </div>
+
           <div class="alpha-row">
             <span>Alpha</span>
             <input id="alphaRange" type="range" min="0" max="100" value="100" />
             <span id="alphaValue">1.00</span>
           </div>
         </div>
+
       </section>
     </div>
   </div>
