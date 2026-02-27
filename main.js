@@ -13,7 +13,9 @@ const alphaValue = document.getElementById("alphaValue");
 const savedList = document.getElementById("savedList");
 const saveColorBtn = document.getElementById("saveColorBtn");
 
-/* HSL → RGB */
+/* ------------------------------
+   HSL → RGB
+------------------------------ */
 function hslToRgb(h, s, l) {
   s /= 100;
   l /= 100;
@@ -37,15 +39,19 @@ function hslToRgb(h, s, l) {
   return { r, g, b };
 }
 
-/* RGB → HEX */
+/* ------------------------------
+   RGB → HEX
+------------------------------ */
 function rgbToHex(r, g, b) {
   const toHex = (v) => v.toString(16).padStart(2, "0");
   return "#" + toHex(r) + toHex(g) + toHex(b);
 }
 
-/* UI更新 */
+/* ------------------------------
+   UI更新
+------------------------------ */
 function updateUI() {
-  const alpha = alphaRange.value / 100;
+  const alpha = parseFloat(alphaRange.value) / 100;
   const { r, g, b } = hslToRgb(hue, sat, light);
   const hex = rgbToHex(r, g, b);
 
@@ -72,7 +78,9 @@ function updateUI() {
   hueHandle.style.top = `${(hue / 360) * rect2.height}px`;
 }
 
-/* SLパネル操作（scrollY補正なし） */
+/* ------------------------------
+   SLパネル操作（sticky前提なので scrollY 補正なし）
+------------------------------ */
 function handleSLMove(clientX, clientY) {
   const rect = slPanel.getBoundingClientRect();
 
@@ -121,7 +129,9 @@ slPanel.addEventListener("touchstart", (e) => {
   window.addEventListener("touchend", end);
 });
 
-/* Hueスライダー */
+/* ------------------------------
+   Hueスライダー
+------------------------------ */
 function handleHueMove(clientY) {
   const rect = hueSlider.getBoundingClientRect();
 
@@ -137,4 +147,112 @@ hueSlider.addEventListener("mousedown", (e) => {
   const move = (ev) => handleHueMove(ev.clientY);
   const up = () => {
     window.removeEventListener("mousemove", move);
-    window.removeEventListener("
+    window.removeEventListener("mouseup", up);
+  };
+
+  move(e);
+  window.addEventListener("mousemove", move);
+  window.addEventListener("mouseup", up);
+});
+
+/* スマホ */
+hueSlider.addEventListener("touchstart", (e) => {
+  e.preventDefault();
+  const t = e.touches[0];
+  handleHueMove(t.clientY);
+
+  const move = (ev) => {
+    ev.preventDefault();
+    const touch = ev.touches[0];
+    handleHueMove(touch.clientY);
+  };
+  const end = () => {
+    window.removeEventListener("touchmove", move);
+    window.removeEventListener("touchend", end);
+  };
+
+  window.addEventListener("touchmove", move, { passive: false });
+  window.addEventListener("touchend", end);
+});
+
+/* ------------------------------
+   Alphaスライダー
+------------------------------ */
+alphaRange.addEventListener("input", updateUI);
+
+/* ------------------------------
+   保存機能（localStorage）
+------------------------------ */
+function getSaved() {
+  try {
+    return JSON.parse(localStorage.getItem("savedColors") || "[]");
+  } catch {
+    return [];
+  }
+}
+
+function setSaved(arr) {
+  localStorage.setItem("savedColors", JSON.stringify(arr));
+}
+
+function saveColor() {
+  const a = alphaRange.value / 100;
+  const { r, g, b } = hslToRgb(hue, sat, light);
+  const hex = rgbToHex(r, g, b);
+
+  const color = { hex, r, g, b, h: hue, s: sat, l: light, a };
+
+  const saved = getSaved();
+  if (!saved.find(c => c.hex === hex && c.a === a)) {
+    saved.push(color);
+    setSaved(saved);
+    renderSaved();
+  }
+}
+
+function renderSaved() {
+  const saved = getSaved();
+  savedList.innerHTML = "";
+
+  saved.forEach(c => {
+    const div = document.createElement("div");
+    div.className = "saved-item";
+    div.style.backgroundColor = c.hex;
+
+    div.addEventListener("click", () => {
+      hue = c.h;
+      sat = c.s;
+      light = c.l;
+      alphaRange.value = c.a * 100;
+      updateUI();
+    });
+
+    savedList.appendChild(div);
+  });
+}
+
+saveColorBtn.addEventListener("click", saveColor);
+
+/* ------------------------------
+   コピー機能
+------------------------------ */
+document.querySelectorAll(".code-card").forEach((card) => {
+  const btn = card.querySelector(".copy-btn");
+  const textEl = card.querySelector("[data-code]");
+  const badge = card.querySelector(".copy-badge");
+
+  btn.addEventListener("click", async () => {
+    const value = textEl.textContent.trim();
+    try {
+      await navigator.clipboard.writeText(value);
+      badge.classList.add("visible");
+      setTimeout(() => badge.classList.remove("visible"), 900);
+    } catch (e) {
+      console.warn("Copy failed", e);
+    }
+  });
+});
+
+/* 初期描画 */
+updateUI();
+renderSaved();
