@@ -21,7 +21,7 @@ body {
   padding: 0;
   background: var(--bg);
   font-family: var(--font-ui);
-  overflow-x: hidden; /* 横スクロール禁止 */
+  overflow-x: hidden;
 }
 
 .page {
@@ -60,32 +60,21 @@ body {
 }
 
 /* ------------------------------
-   SLパネル（白くならない調整済み）
+   SLパネル（本物のHSL方式）
 ------------------------------ */
 .sl-panel {
   width: 220px;
   height: 220px;
   border-radius: 16px;
   position: relative;
-  background: hsl(0, 100%, 50%);
   border: 1px solid var(--border);
   box-shadow: var(--shadow-soft);
   overflow: hidden;
-}
 
-/* 白グラデを弱めて「上に行っても白にならない」ようにする */
-.sl-panel::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to right, rgba(255,255,255,0.35), transparent);
-}
-
-.sl-panel::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to top, rgba(0,0,0,0.55), transparent);
+  /* 本物のHSL SLパネル（白を拾わない） */
+  background:
+    linear-gradient(to top, #000, transparent),
+    linear-gradient(to right, #fff, hsl(var(--hue), 100%, 50%));
 }
 
 .sl-thumb {
@@ -185,7 +174,7 @@ body {
 }
 
 /* ------------------------------
-   カラーコードカード（横幅制御）
+   カラーコードカード
 ------------------------------ */
 .codes-grid {
   display: grid;
