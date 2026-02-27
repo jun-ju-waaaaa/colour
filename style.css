@@ -21,7 +21,7 @@ body {
   padding: 0;
   background: var(--bg);
   font-family: var(--font-ui);
-  overflow-x: hidden; /* ← 横スクロール禁止（重要） */
+  overflow-x: hidden; /* 横スクロール完全禁止 */
 }
 
 .page {
@@ -40,7 +40,7 @@ body {
 }
 
 /* ------------------------------
-   ピッカー（絶対配置禁止・通常フロー）
+   ピッカー
 ------------------------------ */
 .picker-block {
   display: flex;
@@ -201,10 +201,10 @@ body {
 
 .saved-list {
   display: flex;
-  flex-wrap: wrap; /* ← 横幅上限で折り返し */
+  flex-wrap: wrap;
   gap: 10px;
   width: 100%;
-  overflow-x: hidden; /* ← 横スクロール禁止 */
+  overflow-x: hidden;
 }
 
 .saved-item {
@@ -222,7 +222,7 @@ body {
 }
 
 /* ------------------------------
-   カラーコードカード
+   カラーコードカード（横幅制御）
 ------------------------------ */
 .codes-grid {
   display: grid;
@@ -232,6 +232,9 @@ body {
 }
 
 .code-card {
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden; /* ← はみ出し防止 */
   background: var(--card-bg);
   border-radius: var(--radius-card);
   box-shadow: var(--shadow-soft);
@@ -270,6 +273,8 @@ body {
   align-items: center;
   justify-content: space-between;
   gap: 8px;
+  width: 100%;
+  overflow: hidden; /* ← はみ出し防止 */
 }
 
 .code-text {
@@ -279,6 +284,7 @@ body {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  max-width: calc(100% - 40px); /* ← コピーアイコン分を確保 */
 }
 
 .copy-btn {
