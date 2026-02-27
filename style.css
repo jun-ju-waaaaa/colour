@@ -1,48 +1,15 @@
-/* ピッカー部分を固定高さにしてズレ防止 */
-.picker-block {
+　.picker-block {
   position: relative;
-  height: 360px; /* ←重要：ピッカーの高さを固定 */
-  margin-bottom: 20px;
+  height: 360px;
 }
 
-/* ピッカーを絶対配置（保存色の影響を受けない） */
 .picker-area {
   position: absolute;
   top: 0;
   left: 50%;
   transform: translateX(-50%);
-  display: flex;
-  gap: 20px;
-  align-items: center;
-  justify-content: center;
 }
 
-/* 保存色は通常フローで下に並ぶ */
-.saved-colors {
-  margin-top: 12px;
-}
-
-.saved-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
-.saved-item {
-  width: 42px;
-  height: 42px;
-  border-radius: 12px;
-  border: 1px solid var(--border);
-  box-shadow: var(--shadow-soft);
-  cursor: pointer;
-  transition: transform 0.15s ease;
-}
-
-.saved-item:active {
-  transform: scale(0.92);
-}
-
-/* body のスクロールは許可（ズレない構造なのでOK） */
 body {
-  overflow-y: auto;
+  overflow: hidden;
 }
