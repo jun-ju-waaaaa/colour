@@ -1,4 +1,4 @@
-let hue = 24;   // 初期値（#ff6600付近）
+let hue = 24;
 let sat = 100;
 let light = 50;
 
@@ -12,7 +12,7 @@ const alphaRange = document.getElementById("alphaRange");
 const alphaValue = document.getElementById("alphaValue");
 
 /* ------------------------------
-   HSL → RGB 変換
+   HSL → RGB
 ------------------------------ */
 function hslToRgb(h, s, l) {
   s /= 100;
@@ -38,7 +38,7 @@ function hslToRgb(h, s, l) {
 }
 
 /* ------------------------------
-   RGB → HEX 変換
+   RGB → HEX
 ------------------------------ */
 function rgbToHex(r, g, b) {
   const toHex = (v) => v.toString(16).padStart(2, "0");
@@ -71,11 +71,9 @@ function updateUI() {
   const { r, g, b } = hslToRgb(hue, sat, light);
   const hex = rgbToHex(r, g, b);
 
-  // プレビュー更新
   preview.style.backgroundColor = hex;
   previewLabel.textContent = hex;
 
-  // カード更新
   document.querySelector('[data-type="hex"] [data-code]').textContent = hex;
   document.querySelector('[data-type="rgb"] [data-code]').textContent =
     `rgb(${r}, ${g}, ${b})`;
@@ -92,54 +90,87 @@ function updateUI() {
 }
 
 /* ------------------------------
-   Hueスライダー操作
+   共通：SLパネル操作
 ------------------------------ */
-hueSlider.addEventListener("mousedown", (e) => {
-  const move = (ev) => {
-    const rect = hueSlider.getBoundingClientRect();
-    let y = ev.clientY - rect.top;
-    y = Math.max(0, Math.min(rect.height, y));
-    const percent = y / rect.height;
-    hue = Math.round(percent * 360);
-    updateUI();
-  };
+function handleSLMove(clientX, clientY) {
+  const rect = slPanel.getBoundingClientRect();
+  let x = clientX - rect.left;
+  let y = clientY - rect.top;
 
+  x = Math.max(0, Math.min(rect.width, x));
+  y = Math.max(0, Math.min(rect.height, y));
+
+  sat = Math.round((x / rect.width) * 100);
+  light = Math.round(100 - (y / rect.height) * 100);
+
+  updateUI();
+}
+
+/* PC */
+slPanel.addEventListener("mousedown", (e) => {
+  const move = (ev) => handleSLMove(ev.clientX, ev.clientY);
   const up = () => {
     window.removeEventListener("mousemove", move);
     window.removeEventListener("mouseup", up);
   };
-
   move(e);
   window.addEventListener("mousemove", move);
   window.addEventListener("mouseup", up);
 });
 
-/* ------------------------------
-   SLパネル操作
------------------------------- */
-slPanel.addEventListener("mousedown", (e) => {
+/* スマホ */
+slPanel.addEventListener("touchstart", (e) => {
+  e.preventDefault();
   const move = (ev) => {
-    const rect = slPanel.getBoundingClientRect();
-    let x = ev.clientX - rect.left;
-    let y = ev.clientY - rect.top;
-
-    x = Math.max(0, Math.min(rect.width, x));
-    y = Math.max(0, Math.min(rect.height, y));
-
-    sat = Math.round((x / rect.width) * 100);
-    light = Math.round(100 - (y / rect.height) * 100);
-
-    updateUI();
+    const t = ev.touches[0];
+    handleSLMove(t.clientX, t.clientY);
   };
+  const end = () => {
+    window.removeEventListener("touchmove", move);
+    window.removeEventListener("touchend", end);
+  };
+  move(e.touches[0]);
+  window.addEventListener("touchmove", move, { passive: false });
+  window.addEventListener("touchend", end);
+});
 
+/* ------------------------------
+   共通：Hueスライダー操作
+------------------------------ */
+function handleHueMove(clientY) {
+  const rect = hueSlider.getBoundingClientRect();
+  let y = clientY - rect.top;
+  y = Math.max(0, Math.min(rect.height, y));
+  hue = Math.round((y / rect.height) * 360);
+  updateUI();
+}
+
+/* PC */
+hueSlider.addEventListener("mousedown", (e) => {
+  const move = (ev) => handleHueMove(ev.clientY);
   const up = () => {
     window.removeEventListener("mousemove", move);
     window.removeEventListener("mouseup", up);
   };
-
   move(e);
   window.addEventListener("mousemove", move);
   window.addEventListener("mouseup", up);
+});
+
+/* スマホ */
+hueSlider.addEventListener("touchstart", (e) => {
+  e.preventDefault();
+  const move = (ev) => {
+    const t = ev.touches[0];
+    handleHueMove(t.clientY);
+  };
+  const end = () => {
+    window.removeEventListener("touchmove", move);
+    window.removeEventListener("touchend", end);
+  };
+  move(e.touches[0]);
+  window.addEventListener("touchmove", move, { passive: false });
+  window.addEventListener("touchend", end);
 });
 
 /* ------------------------------
