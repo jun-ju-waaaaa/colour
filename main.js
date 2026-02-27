@@ -67,7 +67,7 @@ function updateHueHandle() {
 }
 
 function updateUI() {
-  const alpha = parseInt(alphaRange.value, 10) / 100;
+  const alpha = parseFloat(alphaRange.value) / 100;
   const { r, g, b } = hslToRgb(hue, sat, light);
   const hex = rgbToHex(r, g, b);
 
@@ -121,15 +121,19 @@ slPanel.addEventListener("mousedown", (e) => {
 /* スマホ */
 slPanel.addEventListener("touchstart", (e) => {
   e.preventDefault();
+  const t = e.touches[0];
+  handleSLMove(t.clientX, t.clientY);
+
   const move = (ev) => {
-    const t = ev.touches[0];
-    handleSLMove(t.clientX, t.clientY);
+    ev.preventDefault();
+    const touch = ev.touches[0];
+    handleSLMove(touch.clientX, touch.clientY);
   };
   const end = () => {
     window.removeEventListener("touchmove", move);
     window.removeEventListener("touchend", end);
   };
-  move(e.touches[0]);
+
   window.addEventListener("touchmove", move, { passive: false });
   window.addEventListener("touchend", end);
 });
@@ -160,15 +164,19 @@ hueSlider.addEventListener("mousedown", (e) => {
 /* スマホ */
 hueSlider.addEventListener("touchstart", (e) => {
   e.preventDefault();
+  const t = e.touches[0];
+  handleHueMove(t.clientY);
+
   const move = (ev) => {
-    const t = ev.touches[0];
-    handleHueMove(t.clientY);
+    ev.preventDefault();
+    const touch = ev.touches[0];
+    handleHueMove(touch.clientY);
   };
   const end = () => {
     window.removeEventListener("touchmove", move);
     window.removeEventListener("touchend", end);
   };
-  move(e.touches[0]);
+
   window.addEventListener("touchmove", move, { passive: false });
   window.addEventListener("touchend", end);
 });
