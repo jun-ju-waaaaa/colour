@@ -90,7 +90,7 @@ function updateUI() {
 }
 
 /* ------------------------------
-   共通：SLパネル操作
+   SLパネル操作（共通）
 ------------------------------ */
 function handleSLMove(clientX, clientY) {
   const rect = slPanel.getBoundingClientRect();
@@ -108,11 +108,17 @@ function handleSLMove(clientX, clientY) {
 
 /* PC */
 slPanel.addEventListener("mousedown", (e) => {
+  slThumb.classList.add("active");
+  preview.classList.add("active");
+
   const move = (ev) => handleSLMove(ev.clientX, ev.clientY);
   const up = () => {
+    slThumb.classList.remove("active");
+    preview.classList.remove("active");
     window.removeEventListener("mousemove", move);
     window.removeEventListener("mouseup", up);
   };
+
   move(e);
   window.addEventListener("mousemove", move);
   window.addEventListener("mouseup", up);
@@ -121,6 +127,9 @@ slPanel.addEventListener("mousedown", (e) => {
 /* スマホ */
 slPanel.addEventListener("touchstart", (e) => {
   e.preventDefault();
+  slThumb.classList.add("active");
+  preview.classList.add("active");
+
   const t = e.touches[0];
   handleSLMove(t.clientX, t.clientY);
 
@@ -130,6 +139,8 @@ slPanel.addEventListener("touchstart", (e) => {
     handleSLMove(touch.clientX, touch.clientY);
   };
   const end = () => {
+    slThumb.classList.remove("active");
+    preview.classList.remove("active");
     window.removeEventListener("touchmove", move);
     window.removeEventListener("touchend", end);
   };
@@ -139,7 +150,7 @@ slPanel.addEventListener("touchstart", (e) => {
 });
 
 /* ------------------------------
-   共通：Hueスライダー操作
+   Hueスライダー操作（共通）
 ------------------------------ */
 function handleHueMove(clientY) {
   const rect = hueSlider.getBoundingClientRect();
@@ -151,11 +162,17 @@ function handleHueMove(clientY) {
 
 /* PC */
 hueSlider.addEventListener("mousedown", (e) => {
+  hueHandle.classList.add("active");
+  preview.classList.add("active");
+
   const move = (ev) => handleHueMove(ev.clientY);
   const up = () => {
+    hueHandle.classList.remove("active");
+    preview.classList.remove("active");
     window.removeEventListener("mousemove", move);
     window.removeEventListener("mouseup", up);
   };
+
   move(e);
   window.addEventListener("mousemove", move);
   window.addEventListener("mouseup", up);
@@ -164,6 +181,9 @@ hueSlider.addEventListener("mousedown", (e) => {
 /* スマホ */
 hueSlider.addEventListener("touchstart", (e) => {
   e.preventDefault();
+  hueHandle.classList.add("active");
+  preview.classList.add("active");
+
   const t = e.touches[0];
   handleHueMove(t.clientY);
 
@@ -173,6 +193,8 @@ hueSlider.addEventListener("touchstart", (e) => {
     handleHueMove(touch.clientY);
   };
   const end = () => {
+    hueHandle.classList.remove("active");
+    preview.classList.remove("active");
     window.removeEventListener("touchmove", move);
     window.removeEventListener("touchend", end);
   };
