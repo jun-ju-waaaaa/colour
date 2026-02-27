@@ -51,7 +51,7 @@ function rgbToHex(r, g, b) {
    UI更新
 ------------------------------ */
 function updateUI() {
-  const alpha = parseFloat(alphaRange.value) / 100;
+  const alpha = alphaRange.value / 100;
   const { r, g, b } = hslToRgb(hue, sat, light);
   const hex = rgbToHex(r, g, b);
 
@@ -68,18 +68,21 @@ function updateUI() {
 
   alphaValue.textContent = alpha.toFixed(2);
 
-  slPanel.style.background = `hsl(${hue}, 100%, 50%)`;
+  /* 本物のHSL SLパネル用：CSS変数に hue を渡す */
+  slPanel.style.setProperty("--hue", hue);
 
+  /* SLパネル内のサム位置 */
   const rect = slPanel.getBoundingClientRect();
   slThumb.style.left = `${(sat / 100) * rect.width}px`;
   slThumb.style.top = `${((100 - light) / 100) * rect.height}px`;
 
+  /* Hueスライダーのハンドル位置 */
   const rect2 = hueSlider.getBoundingClientRect();
   hueHandle.style.top = `${(hue / 360) * rect2.height}px`;
 }
 
 /* ------------------------------
-   SLパネル操作（sticky前提なので scrollY 補正なし）
+   SLパネル操作（sticky前提なので scrollY補正なし）
 ------------------------------ */
 function handleSLMove(clientX, clientY) {
   const rect = slPanel.getBoundingClientRect();
