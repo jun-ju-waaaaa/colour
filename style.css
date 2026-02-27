@@ -202,6 +202,28 @@ body {
   color: #333333;
 }
 
+/* 保存ボタン */
+
+.save-btn {
+  margin-top: 4px;
+  padding: 8px 16px;
+  border-radius: 999px;
+  border: none;
+  background: #e7e7eb;
+  cursor: pointer;
+  font-size: 13px;
+  color: #333;
+  transition: background 0.15s ease, transform 0.1s ease;
+}
+
+.save-btn:hover {
+  background: #dedee4;
+}
+
+.save-btn:active {
+  transform: scale(0.96);
+}
+
 /* -----------------------------------
    カラーコードカード
 ----------------------------------- */
@@ -303,4 +325,38 @@ body {
 
 .alpha-row input[type="range"] {
   flex: 1;
+}
+
+/* -----------------------------------
+   保存色
+----------------------------------- */
+
+.saved-colors {
+  margin-top: 24px;
+}
+
+.saved-title {
+  font-size: 13px;
+  color: var(--text-sub);
+  margin-bottom: 8px;
+}
+
+.saved-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.saved-item {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-soft);
+  cursor: pointer;
+  transition: transform 0.15s ease;
+}
+
+.saved-item:active {
+  transform: scale(0.92);
 }
