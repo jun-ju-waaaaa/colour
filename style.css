@@ -117,13 +117,19 @@ body {
 
 .sl-thumb {
   position: absolute;
-  width: 14px;
-  height: 14px;
+  width: 20px;
+  height: 20px;
   border-radius: 999px;
   border: 2px solid #ffffff;
-  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.35);
   transform: translate(-50%, -50%);
   pointer-events: none;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+
+.sl-thumb.active {
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.5);
+  transform: translate(-50%, -50%) scale(1.15);
 }
 
 .hue-slider {
@@ -156,6 +162,12 @@ body {
   border: 1px solid #ccc;
   transform: translateY(-3px);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+
+.hue-handle.active {
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.35);
+  transform: translateY(-3px) scale(1.1);
 }
 
 /* -----------------------------------
@@ -174,6 +186,10 @@ body {
   align-items: center;
   justify-content: center;
   transition: background-color 0.2s ease, transform 0.15s ease;
+}
+
+.preview.active {
+  transform: scale(1.02);
 }
 
 .preview-inner {
