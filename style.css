@@ -21,7 +21,7 @@ body {
   padding: 0;
   background: var(--bg);
   font-family: var(--font-ui);
-  overflow-x: hidden;
+  overflow-x: hidden; /* 横スクロール禁止 */
 }
 
 .page {
@@ -39,7 +39,9 @@ body {
   box-shadow: var(--shadow-soft);
 }
 
-/* ピッカーを sticky 固定 */
+/* ------------------------------
+   ピッカー（sticky固定）
+------------------------------ */
 .picker-block {
   position: sticky;
   top: 0;
@@ -57,7 +59,9 @@ body {
   justify-content: center;
 }
 
-/* SLパネル */
+/* ------------------------------
+   SLパネル（白くならない調整済み）
+------------------------------ */
 .sl-panel {
   width: 220px;
   height: 220px;
@@ -69,18 +73,19 @@ body {
   overflow: hidden;
 }
 
+/* 白グラデを弱めて「上に行っても白にならない」ようにする */
 .sl-panel::before {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(to right, #fff, transparent);
+  background: linear-gradient(to right, rgba(255,255,255,0.35), transparent);
 }
 
 .sl-panel::after {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(to top, #000, transparent);
+  background: linear-gradient(to top, rgba(0,0,0,0.55), transparent);
 }
 
 .sl-thumb {
@@ -94,7 +99,9 @@ body {
   pointer-events: none;
 }
 
-/* Hueスライダー */
+/* ------------------------------
+   Hueスライダー
+------------------------------ */
 .hue-slider {
   width: 26px;
   height: 220px;
@@ -125,7 +132,9 @@ body {
   transform: translateY(-3px);
 }
 
-/* プレビュー */
+/* ------------------------------
+   プレビュー
+------------------------------ */
 .preview {
   width: 100%;
   max-width: 520px;
@@ -146,7 +155,19 @@ body {
   font-family: var(--font-mono);
 }
 
-/* 保存色 */
+/* ------------------------------
+   保存色
+------------------------------ */
+.saved-colors {
+  width: 100%;
+}
+
+.saved-title {
+  font-size: 13px;
+  color: var(--text-sub);
+  margin-bottom: 8px;
+}
+
 .saved-list {
   display: flex;
   flex-wrap: wrap;
@@ -163,7 +184,9 @@ body {
   box-shadow: var(--shadow-soft);
 }
 
-/* カラーコードカード */
+/* ------------------------------
+   カラーコードカード（横幅制御）
+------------------------------ */
 .codes-grid {
   display: grid;
   grid-template-columns: 1fr;
@@ -180,6 +203,13 @@ body {
   padding: 14px;
 }
 
+.code-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: var(--text-sub);
+}
+
 .code-body {
   display: flex;
   justify-content: space-between;
@@ -193,4 +223,30 @@ body {
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: calc(100% - 40px);
+}
+
+.copy-btn {
+  border: none;
+  background: #f3f3f5;
+  border-radius: 999px;
+  padding: 4px 8px;
+}
+
+.copy-icon {
+  width: 14px;
+  height: 14px;
+  fill: #6b6b6f;
+}
+
+.alpha-row {
+  margin-top: 6px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  color: var(--text-sub);
+}
+
+.alpha-row input[type="range"] {
+  flex: 1;
 }
