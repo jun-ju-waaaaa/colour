@@ -13,9 +13,7 @@ const alphaValue = document.getElementById("alphaValue");
 const savedList = document.getElementById("savedList");
 const saveColorBtn = document.getElementById("saveColorBtn");
 
-/* ------------------------------
-   HSL → RGB
------------------------------- */
+/* HSL → RGB */
 function hslToRgb(h, s, l) {
   s /= 100;
   l /= 100;
@@ -39,19 +37,15 @@ function hslToRgb(h, s, l) {
   return { r, g, b };
 }
 
-/* ------------------------------
-   RGB → HEX
------------------------------- */
+/* RGB → HEX */
 function rgbToHex(r, g, b) {
   const toHex = (v) => v.toString(16).padStart(2, "0");
   return "#" + toHex(r) + toHex(g) + toHex(b);
 }
 
-/* ------------------------------
-   UI更新
------------------------------- */
+/* UI更新 */
 function updateUI() {
-  const alpha = parseFloat(alphaRange.value) / 100;
+  const alpha = alphaRange.value / 100;
   const { r, g, b } = hslToRgb(hue, sat, light);
   const hex = rgbToHex(r, g, b);
 
@@ -78,15 +72,12 @@ function updateUI() {
   hueHandle.style.top = `${(hue / 360) * rect2.height}px`;
 }
 
-/* ------------------------------
-   SLパネル操作（scrollY補正入り）
------------------------------- */
+/* SLパネル操作（scrollY補正なし） */
 function handleSLMove(clientX, clientY) {
   const rect = slPanel.getBoundingClientRect();
-  const scrollY = window.scrollY;
 
   let x = clientX - rect.left;
-  let y = clientY - (rect.top + scrollY);
+  let y = clientY - rect.top;
 
   x = Math.max(0, Math.min(rect.width, x));
   y = Math.max(0, Math.min(rect.height, y));
@@ -99,13 +90,8 @@ function handleSLMove(clientX, clientY) {
 
 /* PC */
 slPanel.addEventListener("mousedown", (e) => {
-  slThumb.classList.add("active");
-  preview.classList.add("active");
-
   const move = (ev) => handleSLMove(ev.clientX, ev.clientY);
   const up = () => {
-    slThumb.classList.remove("active");
-    preview.classList.remove("active");
     window.removeEventListener("mousemove", move);
     window.removeEventListener("mouseup", up);
   };
@@ -118,9 +104,6 @@ slPanel.addEventListener("mousedown", (e) => {
 /* スマホ */
 slPanel.addEventListener("touchstart", (e) => {
   e.preventDefault();
-  slThumb.classList.add("active");
-  preview.classList.add("active");
-
   const t = e.touches[0];
   handleSLMove(t.clientX, t.clientY);
 
@@ -130,8 +113,6 @@ slPanel.addEventListener("touchstart", (e) => {
     handleSLMove(touch.clientX, touch.clientY);
   };
   const end = () => {
-    slThumb.classList.remove("active");
-    preview.classList.remove("active");
     window.removeEventListener("touchmove", move);
     window.removeEventListener("touchend", end);
   };
@@ -140,14 +121,11 @@ slPanel.addEventListener("touchstart", (e) => {
   window.addEventListener("touchend", end);
 });
 
-/* ------------------------------
-   Hueスライダー（scrollY補正入り）
------------------------------- */
+/* Hueスライダー */
 function handleHueMove(clientY) {
   const rect = hueSlider.getBoundingClientRect();
-  const scrollY = window.scrollY;
 
-  let y = clientY - (rect.top + scrollY);
+  let y = clientY - rect.top;
   y = Math.max(0, Math.min(rect.height, y));
 
   hue = Math.round((y / rect.height) * 360);
@@ -156,125 +134,7 @@ function handleHueMove(clientY) {
 
 /* PC */
 hueSlider.addEventListener("mousedown", (e) => {
-  hueHandle.classList.add("active");
-  preview.classList.add("active");
-
   const move = (ev) => handleHueMove(ev.clientY);
   const up = () => {
-    hueHandle.classList.remove("active");
-    preview.classList.remove("active");
     window.removeEventListener("mousemove", move);
-    window.removeEventListener("mouseup", up);
-  };
-
-  move(e);
-  window.addEventListener("mousemove", move);
-  window.addEventListener("mouseup", up);
-});
-
-/* スマホ */
-hueSlider.addEventListener("touchstart", (e) => {
-  e.preventDefault();
-  hueHandle.classList.add("active");
-  preview.classList.add("active");
-
-  const t = e.touches[0];
-  handleHueMove(t.clientY);
-
-  const move = (ev) => {
-    ev.preventDefault();
-    const touch = ev.touches[0];
-    handleHueMove(touch.clientY);
-  };
-  const end = () => {
-    hueHandle.classList.remove("active");
-    preview.classList.remove("active");
-    window.removeEventListener("touchmove", move);
-    window.removeEventListener("touchend", end);
-  };
-
-  window.addEventListener("touchmove", move, { passive: false });
-  window.addEventListener("touchend", end);
-});
-
-/* ------------------------------
-   Alphaスライダー
------------------------------- */
-alphaRange.addEventListener("input", updateUI);
-
-/* ------------------------------
-   保存機能（localStorage）
------------------------------- */
-function getSaved() {
-  try {
-    return JSON.parse(localStorage.getItem("savedColors") || "[]");
-  } catch {
-    return [];
-  }
-}
-
-function setSaved(arr) {
-  localStorage.setItem("savedColors", JSON.stringify(arr));
-}
-
-function saveColor() {
-  const a = alphaRange.value / 100;
-  const { r, g, b } = hslToRgb(hue, sat, light);
-  const hex = rgbToHex(r, g, b);
-
-  const color = { hex, r, g, b, h: hue, s: sat, l: light, a };
-
-  const saved = getSaved();
-  if (!saved.find(c => c.hex === hex && c.a === a)) {
-    saved.push(color);
-    setSaved(saved);
-    renderSaved();
-  }
-}
-
-function renderSaved() {
-  const saved = getSaved();
-  savedList.innerHTML = "";
-
-  saved.forEach(c => {
-    const div = document.createElement("div");
-    div.className = "saved-item";
-    div.style.backgroundColor = c.hex;
-
-    div.addEventListener("click", () => {
-      hue = c.h;
-      sat = c.s;
-      light = c.l;
-      alphaRange.value = c.a * 100;
-      updateUI();
-    });
-
-    savedList.appendChild(div);
-  });
-}
-
-saveColorBtn.addEventListener("click", saveColor);
-
-/* ------------------------------
-   コピー機能
------------------------------- */
-document.querySelectorAll(".code-card").forEach((card) => {
-  const btn = card.querySelector(".copy-btn");
-  const textEl = card.querySelector("[data-code]");
-  const badge = card.querySelector(".copy-badge");
-
-  btn.addEventListener("click", async () => {
-    const value = textEl.textContent.trim();
-    try {
-      await navigator.clipboard.writeText(value);
-      badge.classList.add("visible");
-      setTimeout(() => badge.classList.remove("visible"), 900);
-    } catch (e) {
-      console.warn("Copy failed", e);
-    }
-  });
-});
-
-/* 初期描画 */
-updateUI();
-renderSaved();
+    window.removeEventListener("
