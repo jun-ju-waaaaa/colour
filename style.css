@@ -12,14 +12,18 @@
     Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
 
+* {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
   padding: 0;
   background: var(--bg);
   font-family: var(--font-ui);
+  overflow-x: hidden; /* ← 横スクロール禁止（重要） */
 }
 
-/* レイアウト */
 .page {
   padding: 24px;
   display: flex;
@@ -35,7 +39,9 @@ body {
   box-shadow: var(--shadow-soft);
 }
 
-/* ピッカーは通常フローでOK（絶対配置禁止） */
+/* ------------------------------
+   ピッカー（絶対配置禁止・通常フロー）
+------------------------------ */
 .picker-block {
   display: flex;
   flex-direction: column;
@@ -48,9 +54,12 @@ body {
   gap: 20px;
   align-items: center;
   justify-content: center;
+  width: 100%;
 }
 
-/* SLパネル */
+/* ------------------------------
+   SLパネル
+------------------------------ */
 .sl-panel {
   width: 220px;
   height: 220px;
@@ -93,7 +102,9 @@ body {
   box-shadow: 0 0 0 3px rgba(0,0,0,0.5);
 }
 
-/* Hueスライダー */
+/* ------------------------------
+   Hueスライダー
+------------------------------ */
 .hue-slider {
   width: 26px;
   height: 220px;
@@ -130,7 +141,9 @@ body {
   box-shadow: 0 2px 5px rgba(0,0,0,0.35);
 }
 
-/* プレビュー */
+/* ------------------------------
+   プレビュー
+------------------------------ */
 .preview {
   width: 100%;
   max-width: 520px;
@@ -156,7 +169,9 @@ body {
   font-family: var(--font-mono);
 }
 
-/* 保存ボタン */
+/* ------------------------------
+   保存ボタン
+------------------------------ */
 .save-btn {
   padding: 8px 16px;
   border-radius: 999px;
@@ -170,8 +185,11 @@ body {
   transform: scale(0.96);
 }
 
-/* 保存色 */
+/* ------------------------------
+   保存色（横幅上限・折り返し）
+------------------------------ */
 .saved-colors {
+  width: 100%;
   margin-top: 12px;
 }
 
@@ -183,8 +201,10 @@ body {
 
 .saved-list {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: wrap; /* ← 横幅上限で折り返し */
   gap: 10px;
+  width: 100%;
+  overflow-x: hidden; /* ← 横スクロール禁止 */
 }
 
 .saved-item {
@@ -199,4 +219,103 @@ body {
 
 .saved-item:active {
   transform: scale(0.92);
+}
+
+/* ------------------------------
+   カラーコードカード
+------------------------------ */
+.codes-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.code-card {
+  background: var(--card-bg);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-soft);
+  border: 1px solid var(--border);
+  padding: 14px 14px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.code-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 11px;
+  color: var(--text-sub);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.copy-badge {
+  font-size: 11px;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 0.15s ease, transform 0.15s ease;
+  color: #2f9e44;
+}
+
+.copy-badge.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.code-body {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.code-text {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--text-main);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.copy-btn {
+  border: none;
+  background: #f3f3f5;
+  border-radius: 999px;
+  padding: 4px 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.15s ease, transform 0.1s ease;
+}
+
+.copy-btn:hover {
+  background: #e7e7eb;
+}
+
+.copy-btn:active {
+  transform: scale(0.96);
+}
+
+.copy-icon {
+  width: 14px;
+  height: 14px;
+  fill: #6b6b6f;
+}
+
+.alpha-row {
+  margin-top: 6px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  color: var(--text-sub);
+}
+
+.alpha-row input[type="range"] {
+  flex: 1;
 }
