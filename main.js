@@ -10,6 +10,8 @@ const preview = document.getElementById("preview");
 const previewLabel = document.getElementById("previewLabel");
 const alphaRange = document.getElementById("alphaRange");
 const alphaValue = document.getElementById("alphaValue");
+const savedList = document.getElementById("savedList");
+const saveColorBtn = document.getElementById("saveColorBtn");
 
 /* ------------------------------
    HSL → RGB
@@ -90,7 +92,7 @@ function updateUI() {
 }
 
 /* ------------------------------
-   SLパネル操作（共通）
+   SLパネル操作
 ------------------------------ */
 function handleSLMove(clientX, clientY) {
   const rect = slPanel.getBoundingClientRect();
@@ -150,7 +152,7 @@ slPanel.addEventListener("touchstart", (e) => {
 });
 
 /* ------------------------------
-   Hueスライダー操作（共通）
+   Hueスライダー操作
 ------------------------------ */
 function handleHueMove(clientY) {
   const rect = hueSlider.getBoundingClientRect();
@@ -209,6 +211,70 @@ hueSlider.addEventListener("touchstart", (e) => {
 alphaRange.addEventListener("input", updateUI);
 
 /* ------------------------------
+   保存機能（localStorage）
+------------------------------ */
+function getSavedColors() {
+  try {
+    return JSON.parse(localStorage.getItem("savedColors") || "[]");
+  } catch {
+    return [];
+  }
+}
+
+function setSavedColors(colors) {
+  localStorage.setItem("savedColors", JSON.stringify(colors));
+}
+
+function saveCurrentColor() {
+  const alpha = parseFloat(alphaRange.value) / 100;
+  const { r, g, b } = hslToRgb(hue, sat, light);
+  const hex = rgbToHex(r, g, b);
+
+  const color = {
+    hex,
+    r,
+    g,
+    b,
+    h: hue,
+    s: sat,
+    l: light,
+    a: alpha
+  };
+
+  const saved = getSavedColors();
+
+  // 重複防止（hex + alpha）
+  if (!saved.find(c => c.hex === color.hex && c.a === color.a)) {
+    saved.push(color);
+    setSavedColors(saved);
+    renderSavedColors();
+  }
+}
+
+function renderSavedColors() {
+  const saved = getSavedColors();
+  savedList.innerHTML = "";
+
+  saved.forEach((c) => {
+    const div = document.createElement("div");
+    div.className = "saved-item";
+    div.style.backgroundColor = c.hex;
+
+    div.addEventListener("click", () => {
+      hue = c.h;
+      sat = c.s;
+      light = c.l;
+      alphaRange.value = c.a * 100;
+      updateUI();
+    });
+
+    savedList.appendChild(div);
+  });
+}
+
+saveColorBtn.addEventListener("click", saveCurrentColor);
+
+/* ------------------------------
    コピー機能
 ------------------------------ */
 document.querySelectorAll(".code-card").forEach((card) => {
@@ -230,3 +296,4 @@ document.querySelectorAll(".code-card").forEach((card) => {
 
 /* 初期描画 */
 updateUI();
+renderSavedColors();
