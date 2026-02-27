@@ -21,7 +21,7 @@ body {
   padding: 0;
   background: var(--bg);
   font-family: var(--font-ui);
-  overflow-x: hidden; /* 横スクロール完全禁止 */
+  overflow-x: hidden;
 }
 
 .page {
@@ -39,27 +39,25 @@ body {
   box-shadow: var(--shadow-soft);
 }
 
-/* ------------------------------
-   ピッカー
------------------------------- */
+/* ピッカーを sticky 固定 */
 .picker-block {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: var(--card-bg);
+  padding-bottom: 20px;
   display: flex;
   flex-direction: column;
-  align-items: center;
   gap: 20px;
 }
 
 .picker-area {
   display: flex;
   gap: 20px;
-  align-items: center;
   justify-content: center;
-  width: 100%;
 }
 
-/* ------------------------------
-   SLパネル
------------------------------- */
+/* SLパネル */
 .sl-panel {
   width: 220px;
   height: 220px;
@@ -94,17 +92,9 @@ body {
   box-shadow: 0 0 0 2px rgba(0,0,0,0.35);
   transform: translate(-50%, -50%);
   pointer-events: none;
-  transition: transform .12s ease, box-shadow .12s ease;
 }
 
-.sl-thumb.active {
-  transform: translate(-50%, -50%) scale(1.15);
-  box-shadow: 0 0 0 3px rgba(0,0,0,0.5);
-}
-
-/* ------------------------------
-   Hueスライダー
------------------------------- */
+/* Hueスライダー */
 .hue-slider {
   width: 26px;
   height: 220px;
@@ -133,17 +123,9 @@ body {
   border-radius: 3px;
   border: 1px solid #ccc;
   transform: translateY(-3px);
-  transition: transform .12s ease, box-shadow .12s ease;
 }
 
-.hue-handle.active {
-  transform: translateY(-3px) scale(1.1);
-  box-shadow: 0 2px 5px rgba(0,0,0,0.35);
-}
-
-/* ------------------------------
-   プレビュー
------------------------------- */
+/* プレビュー */
 .preview {
   width: 100%;
   max-width: 520px;
@@ -154,11 +136,6 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: transform .15s ease;
-}
-
-.preview.active {
-  transform: scale(1.02);
 }
 
 .preview-inner {
@@ -169,36 +146,7 @@ body {
   font-family: var(--font-mono);
 }
 
-/* ------------------------------
-   保存ボタン
------------------------------- */
-.save-btn {
-  padding: 8px 16px;
-  border-radius: 999px;
-  border: none;
-  background: #e7e7eb;
-  cursor: pointer;
-  transition: transform .1s ease;
-}
-
-.save-btn:active {
-  transform: scale(0.96);
-}
-
-/* ------------------------------
-   保存色（横幅上限・折り返し）
------------------------------- */
-.saved-colors {
-  width: 100%;
-  margin-top: 12px;
-}
-
-.saved-title {
-  font-size: 13px;
-  color: var(--text-sub);
-  margin-bottom: 8px;
-}
-
+/* 保存色 */
 .saved-list {
   display: flex;
   flex-wrap: wrap;
@@ -213,17 +161,9 @@ body {
   border-radius: 12px;
   border: 1px solid var(--border);
   box-shadow: var(--shadow-soft);
-  cursor: pointer;
-  transition: transform .15s ease;
 }
 
-.saved-item:active {
-  transform: scale(0.92);
-}
-
-/* ------------------------------
-   カラーコードカード（横幅制御）
------------------------------- */
+/* カラーコードカード */
 .codes-grid {
   display: grid;
   grid-template-columns: 1fr;
@@ -233,95 +173,24 @@ body {
 
 .code-card {
   width: 100%;
-  max-width: 100%;
-  overflow: hidden; /* ← はみ出し防止 */
+  overflow: hidden;
   background: var(--card-bg);
   border-radius: var(--radius-card);
-  box-shadow: var(--shadow-soft);
   border: 1px solid var(--border);
-  padding: 14px 14px 12px;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.code-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-size: 11px;
-  color: var(--text-sub);
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-}
-
-.copy-badge {
-  font-size: 11px;
-  opacity: 0;
-  transform: translateY(4px);
-  transition: opacity 0.15s ease, transform 0.15s ease;
-  color: #2f9e44;
-}
-
-.copy-badge.visible {
-  opacity: 1;
-  transform: translateY(0);
+  padding: 14px;
 }
 
 .code-body {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  gap: 8px;
   width: 100%;
-  overflow: hidden; /* ← はみ出し防止 */
+  overflow: hidden;
 }
 
 .code-text {
   font-family: var(--font-mono);
-  font-size: 13px;
-  color: var(--text-main);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: calc(100% - 40px); /* ← コピーアイコン分を確保 */
-}
-
-.copy-btn {
-  border: none;
-  background: #f3f3f5;
-  border-radius: 999px;
-  padding: 4px 8px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: background-color 0.15s ease, transform 0.1s ease;
-}
-
-.copy-btn:hover {
-  background: #e7e7eb;
-}
-
-.copy-btn:active {
-  transform: scale(0.96);
-}
-
-.copy-icon {
-  width: 14px;
-  height: 14px;
-  fill: #6b6b6f;
-}
-
-.alpha-row {
-  margin-top: 6px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 11px;
-  color: var(--text-sub);
-}
-
-.alpha-row input[type="range"] {
-  flex: 1;
+  max-width: calc(100% - 40px);
 }
