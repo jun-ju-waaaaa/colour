@@ -77,9 +77,10 @@ function updateUI() {
   document.querySelector('[data-type="hsl"] [data-code]').textContent =
     `hsl(${hsl.h}, ${hsl.s}%, ${hsl.l}%)`;
   document.querySelector('[data-type="rgba"] [data-code]').textContent =
-    `rgba(${r}, ${g}, ${b}, 1)`;
+    `rgba(${r}, ${g}, ${b}, 
+    
+    slPanel.style.setProperty("--hue", hue);
 
-  slPanel.style.setProperty("--hue", hue);
 
   const rect = slPanel.getBoundingClientRect();
   slThumb.style.left = `${(sat / 100) * rect.width}px`;
