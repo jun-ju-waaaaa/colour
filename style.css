@@ -71,11 +71,12 @@ body {
   box-shadow: var(--shadow-soft);
   overflow: hidden;
 
-  /* 本物のHSL SLパネル（白を拾わない） */
+  /* 本物のHSL SLパネル（2枚レイヤー） */
   background:
     linear-gradient(to top, #000, transparent),
     linear-gradient(to right, #fff, hsl(var(--hue), 100%, 50%));
 }
+
 
 .sl-thumb {
   position: absolute;
