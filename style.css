@@ -192,3 +192,42 @@ body {
 .copy-btn.copied {
   background: #d1ffd1;
 }
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #111;
+    --card-bg: #1c1c1e;
+    --border: #2c2c2e;
+    --text-main: #fff;
+    --text-sub: #8e8e93;
+    --shadow-soft: 0 2px 8px rgba(0,0,0,0.4);
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text-main);
+  }
+
+  .app {
+    background: var(--card-bg);
+  }
+
+  .code-card {
+    background: var(--card-bg);
+    border-color: var(--border);
+  }
+
+  .preview-inner {
+    background: rgba(0,0,0,0.4);
+    color: var(--text-main);
+  }
+
+  .save-btn {
+    background: #2c2c2e;
+    color: var(--text-main);
+  }
+
+  .copy-btn {
+    background: #2c2c2e;
+  }
+}
