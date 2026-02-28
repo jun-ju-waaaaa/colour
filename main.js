@@ -40,7 +40,7 @@ function rgbToHex(r, g, b) {
   return "#" + toHex(r) + toHex(g) + toHex(b);
 }
 
-/* RGB → HSL（表示用） */
+/* RGB → HSL */
 function rgbToHsl(r, g, b) {
   r /= 255; g /= 255; b /= 255;
   const max = Math.max(r,g,b), min = Math.min(r,g,b);
@@ -75,20 +75,19 @@ function updateUI() {
   document.querySelector('[data-type="rgb"] [data-code]').textContent =
     `rgb(${r}, ${g}, ${b})`;
   document.querySelector('[data-type="hsl"] [data-code]').textContent =
-    `hsl(${hsl.h}, ${hsl.s}%, ${hsl.
+    `hsl(${hsl.h}, ${hsl.s}%, ${hsl.l}%)`;
   document.querySelector('[data-type="rgba"] [data-code]').textContent =
     `rgba(${r}, ${g}, ${b}, 1)`;
 
-slPanel.style.setProperty("--hue", hue);
+  /* HSV の hue を CSS に渡す */
+  slPanel.style.setProperty("--hue", hue);
 
-    
-    slPanel.style.setProperty("--hue", hue);
-
-
+  /* SL パネルのつまみ位置 */
   const rect = slPanel.getBoundingClientRect();
   slThumb.style.left = `${(sat / 100) * rect.width}px`;
   slThumb.style.top = `${((100 - val) / 100) * rect.height}px`;
 
+  /* Hue ハンドル位置 */
   const rect2 = hueSlider.getBoundingClientRect();
   hueHandle.style.left = `${(hue / 360) * rect2.width}px`;
 }
@@ -167,3 +166,58 @@ hueSlider.addEventListener("touchstart", (e) => {
   handleHueMove(t.clientX);
 
   const move = (ev) => {
+    ev.preventDefault();
+    const touch = ev.touches[0];
+    handleHueMove(touch.clientX);
+  };
+  const end = () => {
+    window.removeEventListener("touchmove", move);
+    window.removeEventListener("touchend", end);
+  };
+
+  window.addEventListener("touchmove", move, { passive: false });
+  window.addEventListener("touchend", end);
+});
+
+/* 保存色 */
+saveColorBtn.addEventListener("click", () => {
+  const { r, g, b } = hsvToRgb(hue, sat, val);
+  const hex = rgbToHex(r, g, b);
+
+  const item = document.createElement("div");
+  item.className = "saved-item";
+  item.style.backgroundColor = hex;
+
+  item.addEventListener("click", () => {
+    const rgb = item.style.backgroundColor.match(/\d+/g).map(Number);
+    const [rr, gg, bb] = rgb;
+
+    /* RGB → HSV に戻す */
+    const max = Math.max(rr, gg, bb);
+    const min = Math.min(rr, gg, bb);
+    const d = max - min;
+
+    let h = 0;
+    if (d !== 0) {
+      if (max === rr) h = ((gg - bb) / d) % 6;
+      else if (max === gg) h = (bb - rr) / d + 2;
+      else h = (rr - gg) / d + 4;
+      h = Math.round(h * 60);
+      if (h < 0) h += 360;
+    }
+
+    const v = Math.round((max / 255) * 100);
+    const s = max === 0 ? 0 : Math.round((d / max) * 100);
+
+    hue = h;
+    sat = s;
+    val = v;
+
+    updateUI();
+  });
+
+  savedList.appendChild(item);
+});
+
+/* 初期表示 */
+updateUI();
