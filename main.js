@@ -221,7 +221,6 @@ saveColorBtn.addEventListener("click", () => {
 
 /* 初期表示 */
 updateUI();
-
 /* コピー機能 */
 document.querySelectorAll(".copy-btn").forEach((btn) => {
   btn.addEventListener("click", () => {
