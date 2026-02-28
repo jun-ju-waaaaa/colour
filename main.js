@@ -221,3 +221,17 @@ saveColorBtn.addEventListener("click", () => {
 
 /* 初期表示 */
 updateUI();
+
+/* コピー機能 */
+document.querySelectorAll(".copy-btn").forEach((btn) => {
+  btn.addEventListener("click", () => {
+    const card = btn.closest(".code-card");
+    const text = card.querySelector("[data-code]").textContent.trim();
+
+    navigator.clipboard.writeText(text).then(() => {
+      btn.classList.add("copied");
+      setTimeout(() => btn.classList.remove("copied"), 600);
+    });
+  });
+});
+
