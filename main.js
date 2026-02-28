@@ -75,9 +75,12 @@ function updateUI() {
   document.querySelector('[data-type="rgb"] [data-code]').textContent =
     `rgb(${r}, ${g}, ${b})`;
   document.querySelector('[data-type="hsl"] [data-code]').textContent =
-    `hsl(${hsl.h}, ${hsl.s}%, ${hsl.l}%)`;
+    `hsl(${hsl.h}, ${hsl.s}%, ${hsl.
   document.querySelector('[data-type="rgba"] [data-code]').textContent =
-    `rgba(${r}, ${g}, ${b}, 
+    `rgba(${r}, ${g}, ${b}, 1)`;
+
+slPanel.style.setProperty("--hue", hue);
+
     
     slPanel.style.setProperty("--hue", hue);
 
