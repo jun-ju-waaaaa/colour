@@ -32,7 +32,6 @@ body {
   box-shadow: var(--shadow-soft);
 }
 
-/* ピッカー全体 */
 .picker-block {
   display: flex;
   flex-direction: column;
@@ -54,7 +53,6 @@ body {
     linear-gradient(to top, #000, transparent),
     linear-gradient(to right, #fff, hsl(var(--hue), 100%, 50%));
 }
-
 
 .sl-thumb {
   position: absolute;
