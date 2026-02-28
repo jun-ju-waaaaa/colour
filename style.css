@@ -188,3 +188,7 @@ body {
   height: 14px;
   fill: #6b6b6f;
 }
+
+.copy-btn.copied {
+  background: #d1ffd1;
+}
