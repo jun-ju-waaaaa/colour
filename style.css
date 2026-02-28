@@ -55,6 +55,7 @@ body {
     linear-gradient(to right, #fff, hsl(var(--hue), 100%, 50%));
 }
 
+
 .sl-thumb {
   position: absolute;
   width: 20px;
